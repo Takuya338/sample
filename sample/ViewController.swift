@@ -13,8 +13,13 @@ class ViewController: UIViewController, WKNavigationDelegate {
     var webView: WKWebView!
     
     override func loadView() {
-        webView = WKWebView()
+        let webConfiguration = WKWebViewConfiguration()
+        
+        webView = WKWebView(frame: .zero,configuration:webConfiguration)
         webView.navigationDelegate = self
+        
+        webView.scrollView.isScrollEnabled = false;
+        
         view = webView
     }
 
@@ -22,9 +27,11 @@ class ViewController: UIViewController, WKNavigationDelegate {
         super.viewDidLoad()
         
         // 表示したいURLを指定
-        let url = URL(string: "https://www.google.com")!
-        let request = URLRequest(url: url)
-        webView.load(request)
+        if let htmlPath = Bundle.main.path(forResource: "index", ofType: "html") {
+            let localURL = URL(fileURLWithPath: htmlPath)
+            let request = URLRequest(url: localURL)
+            webView.load(request)
+        }
     }
 }
 
